@@ -137,14 +137,20 @@
   }
   .cta p { color: var(--muted); margin: 10px auto 28px; max-width: 520px; }
 
-  footer { text-align: center; color: var(--muted); font-size: .85rem; padding: 40px 0 100px; }
+  footer { text-align: center; color: var(--muted); font-size: .85rem; padding: 40px 16px 100px; }
+  footer p + p { margin-top: 6px; }
+  .dev { color: var(--cyan); font-weight: 600; border-bottom: 1px dashed currentColor; }
+  .dev:hover { color: var(--wa); }
 
   /* Botón flotante de WhatsApp */
   .wa-float {
-    position: fixed; right: 20px; bottom: 20px; width: 60px; height: 60px; border-radius: 50%;
+    /* bottom alto para no tapar el sello "Powered by Netlify" */
+    position: fixed; right: 20px; bottom: 88px; width: 60px; height: 60px; border-radius: 50%;
     background: var(--wa); display: grid; place-items: center; z-index: 10;
-    box-shadow: 0 8px 26px rgba(37, 211, 102, .5); transition: transform .2s;
+    box-shadow: 0 8px 26px rgba(37, 211, 102, .5); transition: transform .3s, opacity .3s;
   }
+  /* Oculto mientras se ve la portada, que ya tiene su botón de WhatsApp */
+  .wa-float.hidden { opacity: 0; transform: scale(.5); pointer-events: none; }
   .wa-float:hover { transform: scale(1.1); }
   .wa-float svg { width: 32px; height: 32px; color: #fff; }
   .wa-float::before {
@@ -158,10 +164,21 @@
   .reveal.show { opacity: 1; transform: none; }
 
   @media (max-width: 640px) {
+    /* Todo lo importante cabe en la primera pantalla del móvil */
+    nav { padding: 12px 0; }
     .nav-links { display: none; }
-    .hero { padding: 32px 0 64px; }
-    .logo { width: 128px; height: 128px; }
-    .btn { width: 100%; justify-content: center; }
+    .hero {
+      min-height: calc(100svh - 64px); padding: 0 0 16px;
+      display: flex; flex-direction: column; justify-content: center;
+    }
+    .logo { width: 84px; height: 84px; margin-bottom: 14px; }
+    .tag { font-size: .75rem; margin-bottom: 12px; align-self: center; }
+    h1 { font-size: 2rem; }
+    .hero p { font-size: 1rem; margin: 12px auto 20px; }
+    .hero .meta { margin-top: 10px; font-size: .8rem; }
+    .actions { gap: 10px; }
+    .btn { width: 100%; justify-content: center; padding: 14px 20px; }
+    section { padding: 48px 0; }
   }
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation: none !important; transition: none !important; }
@@ -271,9 +288,12 @@
   </div>
 </section>
 
-<footer>© <span id="year"></span> MK Votol Studio · Herramienta independiente, no afiliada a Votol.</footer>
+<footer>
+  <p>Dev <a class="dev js-wa" href="#" target="_blank" rel="noopener">MikeFernandz</a></p>
+  <p>© <span id="year"></span> MK Votol Studio · Herramienta independiente, no afiliada a Votol.</p>
+</footer>
 
-<a class="wa-float js-wa" href="#" target="_blank" rel="noopener" aria-label="Contactar por WhatsApp">
+<a class="wa-float js-wa hidden" href="#" target="_blank" rel="noopener" aria-label="Contactar por WhatsApp">
   <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 00-8.6 15.1L2 22l5-1.3A10 10 0 1012 2zm0 18.2a8.2 8.2 0 01-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1112 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 01-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 00-.7.3 3 3 0 00-.9 2.2 5.2 5.2 0 001.1 2.7 11.8 11.8 0 004.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 001.8-1.2 2.2 2.2 0 00.1-1.3c0-.1-.2-.2-.5-.3z"/></svg>
 </a>
 
@@ -281,6 +301,10 @@
   const WA = "https://wa.me/5353716361?text=" + encodeURIComponent("Hola, vengo de la web de MK Votol Studio.");
   document.querySelectorAll(".js-wa").forEach(a => a.href = WA);
   document.getElementById("year").textContent = new Date().getFullYear();
+
+  const waFloat = document.querySelector(".wa-float");
+  new IntersectionObserver(([e]) => waFloat.classList.toggle("hidden", e.isIntersecting))
+    .observe(document.querySelector(".hero .actions"));
 
   const io = new IntersectionObserver(entries => entries.forEach(e => {
     if (e.isIntersecting) { e.target.classList.add("show"); io.unobserve(e.target); }
