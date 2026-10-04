@@ -205,7 +205,7 @@
     <h1>Configura tu caja Votol<br><span>sin complicaciones</span></h1>
     <p>Lee, ajusta y guarda la configuración de tu moto o bicimoto eléctrica. Telemetría en vivo, códigos de falla explicados y avisos de seguridad antes de escribir.</p>
     <div class="actions">
-      <a class="btn btn-main" href="descargas/MK_Votol_Studio_Setup_1.0.0.exe" download>
+      <a class="btn btn-main" href="https://github.com/mikefernandz/mk-votol-studio-releases/releases/latest/download/MK_Votol_Studio_Setup.exe">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0l-5-5m5 5l5-5M4 19h16"/></svg>
         Descargar para Windows
       </a>
@@ -214,7 +214,7 @@
         Contactar por WhatsApp
       </a>
     </div>
-    <p class="meta">Versión 1.0.0 · Windows 10 / 11 · Instalador de 10,5 MB</p>
+    <p class="meta" id="dl-meta">Última versión · Windows 10 / 11 · Instalador de ~11 MB</p>
   </header>
 </div>
 
@@ -275,7 +275,7 @@
       <h2>¿Necesitas ayuda con tu caja Votol?</h2>
       <p>Escríbeme por WhatsApp para soporte con el programa, configuraciones o diagnóstico.</p>
       <div class="actions">
-        <a class="btn btn-main" href="descargas/MK_Votol_Studio_Setup_1.0.0.exe" download>
+        <a class="btn btn-main" href="https://github.com/mikefernandz/mk-votol-studio-releases/releases/latest/download/MK_Votol_Studio_Setup.exe">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0l-5-5m5 5l5-5M4 19h16"/></svg>
           Descargar gratis
         </a>
@@ -301,6 +301,17 @@
   const WA = "https://wa.me/5353716361?text=" + encodeURIComponent("Hola, vengo de la web de MK Votol Studio.");
   document.querySelectorAll(".js-wa").forEach(a => a.href = WA);
   document.getElementById("year").textContent = new Date().getFullYear();
+
+  // Version and size of the newest release (the download links always point to it).
+  fetch("https://api.github.com/repos/mikefernandz/mk-votol-studio-releases/releases/latest")
+    .then(r => r.ok ? r.json() : Promise.reject())
+    .then(rel => {
+      const asset = rel.assets.find(a => a.name === "MK_Votol_Studio_Setup.exe");
+      const mb = asset ? (asset.size / 1048576).toFixed(1).replace(".", ",") + " MB" : "~11 MB";
+      document.getElementById("dl-meta").textContent =
+        `Versión ${rel.tag_name.replace(/^v/, "")} · Windows 10 / 11 · Instalador de ${mb}`;
+    })
+    .catch(() => {});  // offline / rate-limited: keep the generic text
 
   const waFloat = document.querySelector(".wa-float");
   new IntersectionObserver(([e]) => waFloat.classList.toggle("hidden", e.isIntersecting))
