@@ -54,6 +54,14 @@
   .brand img { width: 36px; height: 36px; }
   .nav-links { display: flex; gap: 24px; color: var(--muted); }
   .nav-links a:hover { color: var(--text); }
+  .nav-links { margin-left: auto; }
+  .nav-group {
+    display: inline-flex; align-items: center; gap: 8px; margin-left: 24px; padding: 9px 16px;
+    border-radius: 999px; background: var(--wa); color: #04210f; font-weight: 700; font-size: .95rem;
+    transition: transform .2s, box-shadow .2s;
+  }
+  .nav-group:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(37, 211, 102, .35); }
+  .nav-group svg { width: 18px; height: 18px; flex: none; }
 
   /* Portada */
   .hero { text-align: center; padding: 56px 0 88px; }
@@ -195,9 +203,12 @@
     <div class="nav-links">
       <a href="#funciones">Funciones</a>
       <a href="#como">Cómo empezar</a>
-      <a href="#comunidad">Comunidad</a>
       <a href="#contacto">Contacto</a>
     </div>
+    <a class="nav-group" href="https://chat.whatsapp.com/J8qeeiFXPOzJqNH45D3Z8u" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.9M16 3.1a4 4 0 010 7.8"/></svg>
+      Únete al grupo
+    </a>
   </nav>
 
   <header class="hero">
