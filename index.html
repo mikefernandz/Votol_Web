@@ -217,7 +217,7 @@
     <h1>Configura tu caja Votol<br><span>sin complicaciones</span></h1>
     <p>Lee, ajusta y guarda la configuración de tu moto o bicimoto eléctrica. Telemetría en vivo, códigos de falla explicados y avisos de seguridad antes de escribir.</p>
     <div class="actions">
-      <a class="btn btn-main" href="https://github.com/mikefernandz/mk-votol-studio-releases/releases/latest/download/MK_Votol_Studio_Setup.exe">
+      <a class="btn btn-main js-dl" href="https://github.com/mikefernandz/mk-votol-studio-releases/releases/latest">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0l-5-5m5 5l5-5M4 19h16"/></svg>
         Descargar para Windows
       </a>
@@ -361,7 +361,7 @@
       <h2>¿Necesitas ayuda con tu caja Votol?</h2>
       <p>Escríbeme por WhatsApp para soporte con el programa, configuraciones o diagnóstico.</p>
       <div class="actions">
-        <a class="btn btn-main" href="https://github.com/mikefernandz/mk-votol-studio-releases/releases/latest/download/MK_Votol_Studio_Setup.exe">
+        <a class="btn btn-main js-dl" href="https://github.com/mikefernandz/mk-votol-studio-releases/releases/latest">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0l-5-5m5 5l5-5M4 19h16"/></svg>
           Descargar gratis
         </a>
@@ -392,11 +392,14 @@
   document.querySelectorAll(".js-wa").forEach(a => a.href = WA);
   document.getElementById("year").textContent = new Date().getFullYear();
 
-  // Version and size of the newest release (the download links always point to it).
+  // Newest release: its installer (named with the version) becomes the download link.
+  // Without an answer the buttons keep pointing at the releases page, which lists it too.
   fetch("https://api.github.com/repos/mikefernandz/mk-votol-studio-releases/releases/latest")
     .then(r => r.ok ? r.json() : Promise.reject())
     .then(rel => {
-      const asset = rel.assets.find(a => a.name === "MK_Votol_Studio_Setup.exe");
+      const exes = rel.assets.filter(a => /^MK_Votol_Studio_Setup.*\.exe$/.test(a.name));
+      const asset = exes.find(a => a.name !== "MK_Votol_Studio_Setup.exe") || exes[0];
+      if (asset) document.querySelectorAll(".js-dl").forEach(a => a.href = asset.browser_download_url);
       const mb = asset ? (asset.size / 1048576).toFixed(1).replace(".", ",") + " MB" : "~11 MB";
       document.getElementById("dl-meta").textContent =
         `Versión ${rel.tag_name.replace(/^v/, "")} · Windows 10 / 11 · Instalador de ${mb}`;
