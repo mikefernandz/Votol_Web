@@ -257,7 +257,7 @@
         <div class="card reveal">
         <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M10 8.5v7l6-3.5z"/></svg></div>
         <h3>Pruébala gratis en tu moto</h3>
-        <p>La demo lee y edita la configuración de tu moto, importa .ini y te deja escribir hasta 5 configuraciones en tus motos. Todas las herramientas se ven desde el primer día; al activar con tu llave (o el archivo de licencia) se desbloquea todo.</p>
+        <p>La demo se conecta, lee tu configuración, muestra la telemetría en vivo e importa .ini para que revises todo con tu moto. Para guardar cambios en la caja, activa con tu llave (o el archivo de licencia) y se desbloquea todo.</p>
       </div>
       <div class="card reveal">
         <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2V9z"/><path d="M14 3v6h6"/></svg></div>
@@ -268,6 +268,21 @@
         <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg></div>
         <h3>Telemetría en vivo</h3>
         <p>Velocidad, voltaje, corriente y temperaturas en tiempo real, con control remoto de banco y parada de emergencia en la misma pantalla.</p>
+      </div>
+      <div class="card reveal">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 17a8 8 0 1116 0"/><path d="M12 17l4-5"/></svg></div>
+        <h3>Modo Sport</h3>
+        <p>Velocímetro hasta 300 km/h, la marcha en grande, potencia y corriente pico, 0-50 y 0-100. En el móvil es un tablero completo para llevar en la moto; en la PC, una vista Sport en el panel.</p>
+      </div>
+      <div class="card reveal">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9 16H3z"/><path d="M12 10v4M12 17h.01"/></svg></div>
+        <h3>Alertas configurables</h3>
+        <p>Temperatura del controlador y del motor, batería baja, voltaje mínimo, velocidad límite y corriente alta. Vienen con valores seguros y las ajustas a tu gusto; en el móvil, con vibración y sonido opcionales.</p>
+      </div>
+      <div class="card reveal">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 109-9 9 9 0 00-6.4 2.6L3 8"/><path d="M3 3v5h5M12 7v5l3 2"/></svg></div>
+        <h3>Historial de viajes y autonomía real</h3>
+        <p>Cada viaje queda guardado con distancia, consumo, temperaturas máximas y potencia pico. En el móvil, la autonomía se aprende de tus viajes reales.</p>
       </div>
       <div class="card reveal">
         <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4m0 4h.01M10.3 3.9L1.8 18a2 2 0 001.7 3h17a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg></div>
@@ -428,13 +443,16 @@
 
   // Newest release: its installer (named with the version) becomes the download link.
   // Without an answer the buttons keep pointing at the releases page, which lists it too.
-  fetch("https://api.github.com/repos/mikefernandz/mk-votol-studio-releases/releases/latest")
+  // The newest installer and the newest APK may be in different releases (a PC-only fix).
+  fetch("https://api.github.com/repos/mikefernandz/mk-votol-studio-releases/releases?per_page=10")
     .then(r => r.ok ? r.json() : Promise.reject())
-    .then(rel => {
-      const exes = rel.assets.filter(a => /^MK_Votol_Studio_Setup.*\.exe$/.test(a.name));
-      const asset = exes.find(a => a.name !== "MK_Votol_Studio_Setup.exe") || exes[0];
+    .then(list => {
+      const rels = list.filter(x => !x.draft && !x.prerelease);  // newest first
+      const find = re => { for (const x of rels) { const a = x.assets.find(a => re.test(a.name)); if (a) return [x, a]; } return [null, null]; };
+      const [rel, asset] = find(/^MK_Votol_Studio_Setup_.*\.exe$/);
+      if (!rel) return;
       if (asset) document.querySelectorAll(".js-dl").forEach(a => a.href = asset.browser_download_url);
-      const apk = rel.assets.find(a => /^MK_Votol_Studio.*\.apk$/.test(a.name));
+      const [, apk] = find(/^MK_Votol_Studio_.*\.apk$/);
       if (apk) document.querySelectorAll(".js-apk").forEach(a => a.href = apk.browser_download_url);
       const mb = x => (x.size / 1048576).toFixed(1).replace(".", ",") + " MB";
       document.getElementById("dl-meta").textContent =
