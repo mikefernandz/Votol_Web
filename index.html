@@ -108,6 +108,9 @@
   .btn-ghost { border: 1px solid var(--line); background: rgba(12, 19, 34, .7); }
   .btn-ghost:hover { border-color: var(--wa); box-shadow: 0 8px 30px rgba(37, 211, 102, .25); }
   .meta { margin-top: 16px; color: var(--muted); font-size: .9rem; }
+  .apk-help { text-align: left; max-width: 560px; margin-left: auto; margin-right: auto; }
+  .apk-help summary { cursor: pointer; text-align: center; text-decoration: underline; }
+  .apk-help ol { margin: 10px 0 0; padding-left: 22px; line-height: 1.6; }
   .btn-soon { opacity: .55; cursor: default; pointer-events: none; }
   .btn-soon small { font-size: .7rem; padding: 2px 8px; border-radius: 999px; background: rgba(255,255,255,.12); }
 
@@ -241,6 +244,15 @@
       </a>
     </div>
     <p class="meta" id="dl-meta">Última versión · Windows 10 / 11 · Android 7 o superior</p>
+    <details class="meta apk-help">
+      <summary>¿Cómo instalo el APK en Android?</summary>
+      <ol>
+        <li>Toca <b>Descargar para Android</b> y abre el archivo descargado.</li>
+        <li>Si el teléfono pregunta, permite <b>“Instalar apps desconocidas”</b> para tu navegador o el gestor de archivos.</li>
+        <li>Si aparece <b>Play Protect</b>, toca <b>“Más detalles” → “Instalar de todas formas”</b>: avisa porque la app no viene de Play Store.</li>
+        <li>Las actualizaciones se instalan encima: tu licencia, ajustes e historial se conservan.</li>
+      </ol>
+    </details>
   </header>
 </div>
 
@@ -257,7 +269,7 @@
         <div class="card reveal">
         <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M10 8.5v7l6-3.5z"/></svg></div>
         <h3>Pruébala gratis en tu moto</h3>
-        <p>La demo se conecta, lee tu configuración, muestra la telemetría en vivo e importa .ini para que revises todo con tu moto. Para guardar cambios en la caja, activa con tu llave (o el archivo de licencia) y se desbloquea todo.</p>
+        <p>La demo se conecta, lee tu configuración, muestra la telemetría en vivo e importa .ini para que revises todo con tu moto. Para guardar cambios en la caja o exportar .ini, activa con tu llave (o el archivo de licencia) y se desbloquea todo.</p>
       </div>
       <div class="card reveal">
         <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2V9z"/><path d="M14 3v6h6"/></svg></div>
@@ -292,12 +304,12 @@
       <div class="card reveal">
         <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
         <h3>Escritura segura</h3>
-        <p>Antes de escribir te muestra la lista exacta de valores que cambian en la moto, te avisa si algo está fuera del rango recomendado, hace un respaldo automático y relee la moto al terminar. ¿No te gustó el cambio? Un botón lo deshace.</p>
+        <p>Solo cambia los valores que tocaste: el resto de la configuración queda exactamente igual. Antes de escribir te muestra la lista de cambios, te avisa si algo está fuera del rango recomendado o si tienes cambios sin guardar, hace un respaldo automático y relee la moto al terminar. ¿No te gustó el cambio? Un botón lo deshace.</p>
       </div>
       <div class="card reveal">
         <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7l10 10-5 5V2l5 5L7 17"/></svg></div>
         <h3>Cable USB o Bluetooth</h3>
-        <p>Funciona con el cable USB de Votol y con módulos Bluetooth emparejados en Windows.</p>
+        <p>En la PC, con el cable USB de Votol o un módulo Bluetooth emparejado en Windows. En Android, por cable OTG o Bluetooth (clásico y BLE), y se reconecta sola al último dispositivo.</p>
       </div>
       <div class="card reveal">
         <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"/><path d="M4 9h16M9 9v11"/></svg></div>
